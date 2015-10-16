@@ -2,27 +2,32 @@
 
 package games.countdown;
 
-import games.countdown.*;
+import games.*;
 
-public class CountDownGame {
+public class CountDownGame extends Game implements GameDelegate {
 
-    int currentTurn = 0;
-    CountDownPlayer[] players;
+    @Override
+    public void delegateDartDidHit(int hitValue, int multiplier) {
+        int totalHitValue = hitValue * multiplier;
+        this.players[this.currentTurn].score -= totalHitValue;
 
-    void dartDidHit(int valueOfHit) {
-        // The Player threw the dart
-        if (players[currentTurn].threwDart()) {
-            currentTurn++;
-            if (currentTurn == players.length) {
-                currentTurn = 0;
-            }
+        // If the user Busts
+        if (this.players[this.currentTurn].score < 0) {
+            this.players[this.currentTurn].score += totalHitValue;
+            this.players[this.currentTurn].forceEndTurn();
+            this.nextPlayer();
+        } else if (this.players[this.currentTurn].score == 0) {
+            // This player wins
         }
     }
 
     public CountDownGame(int startScore, int numberOfPlayers) {
-        for (int i = 0; i < numberOfPlayers; i++) {
-            players[i] = new CountDownPlayer(startScore, "a");
-        }
+        super();
+        this.currentGame = this;
 
+        // Create an instance of a player and add it to the list
+        for (int i = 0; i < numberOfPlayers; i++) {
+            this.players[i] = new CountDownPlayer(startScore, "a");
+        }
     }
 }

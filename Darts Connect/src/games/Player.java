@@ -5,9 +5,9 @@ import java.lang.String;
 
 public class Player {
     protected String cardID = ""; // The user's RFID card's UID.
-    protected String username = ""; // The user's username (unique).
+    public String username = ""; // The user's username (unique).
     protected int totalNumberOfThrows = 0; // Total number of throws in the game.
-    protected int score = 0; // The user's current score in the game.
+    public int score = 0; // The user's current score in the game.
     protected int numberOfThrowsInTurn = 0; // Total number of throws in the turn.
 
 
@@ -36,6 +36,20 @@ public class Player {
         }
         return true;
     }
+
+    /*
+        Thursday October 15 2015
+        Self explanatory, forces the user's turn to finish
+        Call if the user busts, or finishes a game...
+     */
+    public void forceEndTurn() {
+        numberOfThrowsInTurn = 0;
+    }
+
+    /*
+        To-Do
+        Add skip turn
+     */
 
     public Player(String _cardID) {
         cardID = _cardID;
