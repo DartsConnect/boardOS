@@ -5,4 +5,5 @@ package games;
  */
 public interface GameDelegate {
     void delegateDartDidHit(int hitValue, int multiplier);
+    //void delegateSkipPlayer();
 }
