@@ -36,7 +36,7 @@ public class CountDownGame extends Game implements GameDelegate {
             }
         } else {
             // This is general play
-            
+
             this.players[this.currentTurn].score -= totalHitValue;
 
             // If the user Busts
@@ -63,6 +63,7 @@ public class CountDownGame extends Game implements GameDelegate {
 
                 if (canContinue) {
                     // NOW the user finally wins.
+
                 } else {
                     // The player didn't hit the right spot to win according to the game conditions.
                     currentPlayerScore += totalHitValue;

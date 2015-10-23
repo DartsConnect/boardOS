@@ -6,22 +6,31 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import games.countdown.CountDownPlayer;
+import system.GlobalVariables;
+import system.hardware_input.HardwareInputDelegate;
+import system.hardware_input.KeyboardListener;
 
-public class Main extends Application {
+public class Main extends Application implements HardwareInputDelegate {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        Scene currentScene = new Scene(root, 300, 275);
+        primaryStage.setScene(currentScene);
         primaryStage.show();
 
-        CountDownPlayer player = new CountDownPlayer(301, "a");
+        GlobalVariables.getInstance().keyboardListener = new KeyboardListener(currentScene);
+        GlobalVariables.getInstance().keyboardListener.frontClass = this;
     }
 
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void dartDidHit(int hitValue, int multiplier) {
+
     }
 }
