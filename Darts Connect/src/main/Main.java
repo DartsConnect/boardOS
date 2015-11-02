@@ -1,5 +1,5 @@
 // Thursday October 15 2015
-package sample;
+package main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,25 +12,31 @@ import system.hardware_input.KeyboardListener;
 
 public class Main extends Application implements HardwareInputDelegate {
 
+    Stage window;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        Scene currentScene = new Scene(root, 300, 275);
+        window = primaryStage;
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
+        Parent root = fxmlLoader.load();
+        primaryStage.setTitle("Darts Connect");
+        Scene currentScene = new Scene(root, 1280, 720);
         primaryStage.setScene(currentScene);
+        primaryStage.setResizable(false);
         primaryStage.show();
 
+        GlobalVariables.getInstance().currentScene = currentScene;
         GlobalVariables.getInstance().keyboardListener = new KeyboardListener(currentScene);
         GlobalVariables.getInstance().keyboardListener.frontClass = this;
+
+        GameSelectionController controller = fxmlLoader.getController();
+        System.out.println(controller);
+        controller.sceneLoaded(currentScene);
     }
 
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    @Override
-    public void dartDidHit(int hitValue, int multiplier) {
-
     }
 }

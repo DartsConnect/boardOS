@@ -44,5 +44,6 @@ public class KeyboardListener {
                 keyTimes.remove(key.getText());
             }
         });
+
     }
 }

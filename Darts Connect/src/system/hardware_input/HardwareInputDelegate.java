@@ -12,5 +12,5 @@ public interface HardwareInputDelegate {
         System.out.println("Button Released: " + button.value + "; Duration: " + duration);
     }
 
-    void dartDidHit(int hitValue, int multiplier);
+    default void dartDidHit(int hitValue, int multiplier) {}
 }

@@ -1,5 +1,6 @@
 package system;
 
+import javafx.scene.Scene;
 import system.hardware_input.KeyboardListener;
 
 /**
@@ -13,6 +14,8 @@ public class GlobalVariables {
     }
 
     public static KeyboardListener keyboardListener;
+
+    public static Scene currentScene;
 
     private GlobalVariables() {
     }
