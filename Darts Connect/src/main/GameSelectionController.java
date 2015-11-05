@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import system.GlobalVariables;
 import system.hardware_input.ButtonName;
 import system.hardware_input.HardwareInputDelegate;
-import system.hardware_input.KeyboardListener;
 import ui.SideMenu;
 
 import java.net.URL;
@@ -22,6 +21,7 @@ public class GameSelectionController implements Initializable, HardwareInputDele
         System.out.println(button.value);
     }
 
+    // Monday November 02 2015
     void sceneLoaded(Scene scene) {
         GlobalVariables.getInstance().keyboardListener.frontClass = this;
     }

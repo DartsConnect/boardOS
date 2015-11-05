@@ -1,3 +1,5 @@
+// Monday November 02 2015
+
 package ui;
 
 import javafx.scene.control.Label;
@@ -18,6 +20,7 @@ public class SideMenu extends BorderPane implements HardwareInputDelegate {
     Label footerLabel = new Label("More");
     Boolean isFooterSelectable = false;
 
+    // Monday November 02 2015
     @Override
     public void buttonPressed(ButtonName button) {
         /*
@@ -29,6 +32,7 @@ public class SideMenu extends BorderPane implements HardwareInputDelegate {
 
     }
 
+    // Monday November 02 2015
     public void setOptions(String[] options) {
         // Clear and reset
         allOptions = new SideMenuOption[8];
@@ -43,6 +47,7 @@ public class SideMenu extends BorderPane implements HardwareInputDelegate {
         }
     }
 
+    // Monday November 02 2015
     public SideMenu() {
         this.setTop(titleLabel);
         this.setCenter(optionsBox);

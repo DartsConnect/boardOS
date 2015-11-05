@@ -31,7 +31,6 @@ public class Main extends Application implements HardwareInputDelegate {
         GlobalVariables.getInstance().keyboardListener.frontClass = this;
 
         GameSelectionController controller = fxmlLoader.getController();
-        System.out.println(controller);
         controller.sceneLoaded(currentScene);
     }
 
