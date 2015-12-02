@@ -1,0 +1,15 @@
+.label {
+    -fx-font: SF UI Display;
+    -fx-font-weight: 500;
+    -fx-font-size: 65;
+    -fx-text-fill: #f6f7eb;
+    -fx-text-alignment: center;
+}
+
+.highlight-on {
+    -fx-background-color:  #e94f37;
+}
+
+.highlight-off {
+    -fx-background-color:  #393e41;
+}
