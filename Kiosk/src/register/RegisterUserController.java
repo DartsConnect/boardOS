@@ -5,6 +5,7 @@ package register;
  */
 
 import javafx.fxml.Initializable;
+import org.parse4j.Parse;
 import java.net.URL;
 import java.util.ResourceBundle;
 
