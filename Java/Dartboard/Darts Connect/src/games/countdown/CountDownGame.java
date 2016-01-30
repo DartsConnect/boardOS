@@ -12,6 +12,38 @@ public class CountDownGame extends Game implements GameDelegate {
     private boolean openOnTriple = false;
     private boolean closeOnTriple = false;
 
+    private boolean canOpenRound(int multiplier) {
+        boolean canContinue = false;
+        if (openOnDouble && openOnTriple) {
+            if (multiplier != 1) canContinue = true;
+        } else if (openOnDouble) {
+            if (multiplier == 2) canContinue = true;
+        } else if (openOnTriple) {
+            if (multiplier == 3) canContinue = true;
+        } else { // No condition
+            canContinue = true;
+        }
+
+        return canContinue;
+    }
+
+    private boolean canCloseGame(int multiplier) {
+        boolean canContinue = false;
+
+        // If there are condition to win, ie close on a double, triple or both.
+        if (closeOnDouble && closeOnTriple) {
+            if (multiplier != 1) canContinue = true;
+        } else if (closeOnDouble) {
+            if (multiplier == 2) canContinue = true;
+        } else if (closeOnTriple) {
+            if(multiplier == 3) canContinue = true;
+        } else { // No condition
+            canContinue = true;
+        }
+
+        return canContinue;
+    }
+
     @Override
     public void delegateDartDidHit(int hitValue, int multiplier) {
         int totalHitValue = hitValue * multiplier;
@@ -19,18 +51,7 @@ public class CountDownGame extends Game implements GameDelegate {
 
         // If it is a shot to open the count down and there is a condition to open the game.
         if (currentPlayerScore == gameStartScore) {
-            boolean canContinue = false;
-            if (openOnDouble && openOnTriple) {
-                if (multiplier != 1) canContinue = true;
-            } else if (openOnDouble) {
-                if (multiplier == 2) canContinue = true;
-            } else if (openOnTriple) {
-                if (multiplier == 3) canContinue = true;
-            } else { // No condition
-                canContinue = true;
-            }
-
-            if (canContinue) {
+            if (this.canOpenRound(multiplier)) {
                 currentPlayerScore -= totalHitValue;
                 this.players[this.currentTurn].score = currentPlayerScore;
             }
@@ -47,21 +68,7 @@ public class CountDownGame extends Game implements GameDelegate {
                 this.nextPlayer();
             } else if (currentPlayerScore == 0) {
                 // The player may have finished
-
-                boolean canContinue = false;
-
-                // If there are condition to win, ie close on a double, triple or both.
-                if (closeOnDouble && closeOnTriple) {
-                    if (multiplier != 1) canContinue = true;
-                } else if (closeOnDouble) {
-                    if (multiplier == 2) canContinue = true;
-                } else if (closeOnTriple) {
-                    if(multiplier == 3) canContinue = true;
-                } else { // No condition
-                    canContinue = true;
-                }
-
-                if (canContinue) {
+                if (this.canCloseGame(multiplier)) {
                     // NOW the user finally wins.
 
                 } else {
