@@ -68,12 +68,12 @@ class DartsConnectServer:
         1. Create message
         2. Send it to the client
     '''
-    def sendMessage(self, tag, value):
+    def sendMessage(self, type, value):
         try:
-            message = str(tag + self.messageSplitter + str(value) + self.endFlag)
+            message = str(type + self.messageSplitter + str(value) + self.endFlag)
             self.client.sendall(message)
         except:
-            print "Failed to send message (" + tag + ":" + str(value) + ")"
+            print "Failed to send message (" + type + ":" + str(value) + ")"
 
 
     '''

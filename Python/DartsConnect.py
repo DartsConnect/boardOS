@@ -20,7 +20,9 @@ class DartsConnect():#(DartsConnectServerDelegate):
         pass
 
     def dcsAppleTVConnected(self):
-        pass
+        while self.dcs.client != None:
+            toSend = raw_input("Enter Hit")
+            self.dcs.sendMessage('DartHit', toSend) # should be in the format area, multiplier
 
     def dcsAppleTVDisconnected(self):
         pass
@@ -29,7 +31,7 @@ class DartsConnect():#(DartsConnectServerDelegate):
         pass
 
     def __init__(self):
-        self.dcs = DartsConnectServer(4004, self, 1) # under 1024 is privelidged, reserved for OS 0 for auto port assignment
+        self.dcs = DartsConnectServer(4005, self, 1) # under 1024 is privelidged, reserved for OS 0 for auto port assignment
         self.dcs.startServer()
 
 if __name__ == '__main__':
