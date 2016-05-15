@@ -13,7 +13,7 @@ class DartsConnectBonjour():
 
     def stopBonjour(self):
         print("DartsConnectBonjour --> Unregistering...")
-        self.zeroconf.unregister_service(info)
+        self.zeroconf.unregister_service(self.info)
         self.zeroconf.close()
 
     def startBonjour(self):
@@ -23,14 +23,14 @@ class DartsConnectBonjour():
 
         #desc = {'path': '/~paulsm/'}
 
-        info = ServiceInfo("_dartsconnect._tcp.local.",
+        self.info = ServiceInfo("_dartsconnect._tcp.local.",
                            "Dartboard._dartsconnect._tcp.local.",
                            socket.inet_aton(self.ip), self.port, 0, 0,
                            {}, None)
 
         self.zeroconf = Zeroconf()
         print("DartsConnectBonjour --> DartsConnect service registered")
-        self.zeroconf.register_service(info)
+        self.zeroconf.register_service(self.info)
 
     def __init__(self, ipAddr, port):
         self.ip = ipAddr

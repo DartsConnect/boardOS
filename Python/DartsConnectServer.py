@@ -281,7 +281,7 @@ class DartsConnectServer:
         self.tagKey = 'Tag'
         self.valueKey = 'Value'
         self.host = ''
-        self.shutDownKickTimeout = 3
+        self.shutDownKickTimeout = 1
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         self.printLine()
