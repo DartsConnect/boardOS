@@ -12,21 +12,16 @@ class DCBoardSimulator():
         self.shouldRunConsole = True
         start_new_thread(self.consoleMainLoop, ())
 
-    def stopConsole(self):
-        self.shouldRunConsole = False
+    def getMainInput(self):
+        self.response = raw_input("~>").lower().replace(" ","")
 
-    def consoleMainLoop(self):
-        while self.shouldRunConsole:
-            try:
-                command = raw_input("~> ").lower().replace(" ", "")
-                if command == "help":
-                    print """
-Register user cards: card -p xxx,xxx,xxx OR card (to enter them manually)
-Simulate game: game -t<gametype> -s<total score to hit (if count down)> -p<number of players> -c<conditions in (open,close)>
-Manually Enter Throws: throw
-                        Each entry should be in the format <area>,<multiplier>*<number of times to repeat 1~3>
-                        Note that the *<number of times> part is optional
-Game types: 0: 01
+    def getSubInput(self, title):
+        self.subResponse = raw_input(title + " ~> ").lower().replace(" ","")
+
+    def printHelp(self):
+        '''
+        Simulate game: game -t<gametype> -s<total score to hit (if count down)> -p<number of players> -c<conditions in (open,close)>
+        Game types: 0: 01
             1: Cricket
             2: Free
             3: 20 to 1
@@ -37,7 +32,31 @@ Condition Codes:    a: Any
                     t: Triple
                     b: Bull
                     db: Double Bull
-                            """
+        :return:
+        '''
+        print """
+Register user cards: card -p xxx,xxx,xxx OR card (to enter them manually)
+Manually Enter Throws: throw
+                        Each entry should be in the format <area>,<multiplier>*<number of times to repeat 1~3>
+                        Note that the *<number of times> part is optional
+                """
+
+    def isStillConnected(self):
+        return self.dcs.client != None
+
+    def consoleMainLoop(self):
+        start_new_thread(self.getMainInput,())
+        while True:
+            if self.response == None:
+                if not self.isStillConnected():
+                    break
+            else:
+                #try:
+                command = self.response
+                self.response = None
+                #command = raw_input("~> ").lower().replace(" ", "")
+                if command == "help":
+                    self.printHelp()
                 else:
                     parts = command.split("-")
                     function = parts[0]
@@ -47,25 +66,35 @@ Condition Codes:    a: Any
                         pass
                     elif function == "throw":
                         self.handleManualThrows()
-            except:
-                print "Invalid Command: type help to show valid commands"
-        print "Terminate Console"
+                if self.isStillConnected():
+                    start_new_thread(self.getMainInput, ())
+                #except:
+                    #print "Invalid Command (" + command + "): type help to show valid commands"
+        print "--> Terminate Console"
 
     def handleManualThrows(self):
-        shouldExit = False
-        while not shouldExit and self.shouldRunConsole:
-            throw = raw_input("Throw ~> ").lower()
-            if throw == "b":
-                shouldExit = True
-            elif len(throw.split("*")) > 1:
-                parts = throw.split("*")
-                value = parts[0]
-                for _ in range(0, int(parts[1])):
-                    print value
-                    self.sendDartHit(value)
-                    sleep(1)
+        start_new_thread(self.getSubInput, ("Throw",))
+        while True:
+            if self.subResponse == None:
+                if not self.isStillConnected():
+                    break
             else:
-                self.sendDartHit(throw)
+                throw = self.subResponse
+                self.subResponse = None
+
+                if throw == "b":
+                    break
+                elif len(throw.split("*")) > 1:
+                    parts = throw.split("*")
+                    value = parts[0]
+                    for _ in range(0, int(parts[1])):
+                        print value
+                        self.sendDartHit(value)
+                        sleep(1)
+                else:
+                    self.sendDartHit(throw)
+                if self.isStillConnected():
+                    start_new_thread(self.getSubInput, ("Throw",))
 
     def sendDartHit(self, value):
         if len(value.split(",")) == 1:
@@ -80,15 +109,23 @@ Condition Codes:    a: Any
 
     def handleCardCommand(self, parts):
         if len(parts) == 1:
-            while self.shouldRunConsole:
-                name = raw_input("Username ~> ").replace(" ", "").lower()
-                if name == "b":
-                    break
+            start_new_thread(self.getSubInput, ("Username",))
+            while True:
+                if self.subResponse == None:
+                    if not self.isStillConnected():
+                        break
                 else:
-                    try:
-                        self.dcs.sendMessage(self.cardTag, self.cardIDs[name])
-                    except:
-                        print "Invalid Username"
+                    name = self.subResponse
+                    self.subResponse = None
+                    if name == "b":
+                        break
+                    else:
+                        if self.isStillConnected():
+                            start_new_thread(self.getSubInput, ("Username",))
+                        try:
+                            self.dcs.sendMessage(self.cardTag, self.cardIDs[name])
+                        except:
+                            print "Invalid Username"
         else:
             message = parts[1]
             (flag, data) = self.splitFlagsAndData(message)
@@ -105,5 +142,7 @@ Condition Codes:    a: Any
                     print "Invalid Username"
 
     def __init__(self, dcs, cardIDs):
+        self.response = None
+        self.subResponse = None
         self.dcs = dcs
         self.cardIDs = cardIDs

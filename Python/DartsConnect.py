@@ -15,7 +15,8 @@ class DartsConnect(DartsConnectServerDelegate):
             'jordan':'00000000',
             'jack':'00000001',
             'will':'00000002',
-            'sam':'00000003'
+            'sam':'00000003',
+            'kimber':'00000004'
         }
 
     def dcsDidReceiveData(self, senderTag, data):
@@ -28,16 +29,14 @@ class DartsConnect(DartsConnectServerDelegate):
         self.simulator = DCBoardSimulator(self.dcs, self.cardIDs)
         self.simulator.startConsole()
 
-
     def dcsAppleTVDisconnected(self):
-        self.simulator.stopConsole()
-        self.simulator = None
+        pass
 
     def dcsWillShutdown(self):
         self.bonjour.stopBonjour()
 
     def __init__(self):
-        self.dcs = DartsConnectServer(4007, self, 1) # under 1024 is privileged, reserved for OS 0 for auto port assignment
+        self.dcs = DartsConnectServer(4008, self, 1) # under 1024 is privileged, reserved for OS 0 for auto port assignment
         self.dcs.startServer()
 
 if __name__ == '__main__':

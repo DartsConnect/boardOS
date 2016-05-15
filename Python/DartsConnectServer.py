@@ -107,7 +107,7 @@ class DartsConnectServer:
         try:
             self.sendMessage("DISCONNECT", "Bye")
             self.client = None
-            self.delegate.appleTVDisconnected()
+            self.delegate.dcsAppleTVDisconnected()
             self.printLine()
             print '--> Disconnected from Apple TV'
         except:
@@ -181,6 +181,7 @@ class DartsConnectServer:
         conn.close()
 
         print "--> Disconnected from Apple TV"
+        self.delegate.dcsAppleTVDisconnected()
         self.printLine()
 
 
