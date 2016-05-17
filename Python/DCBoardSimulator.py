@@ -51,25 +51,25 @@ Manually Enter Throws: throw
                 if not self.isStillConnected():
                     break
             else:
-                #try:
-                command = self.response
-                self.response = None
-                #command = raw_input("~> ").lower().replace(" ", "")
-                if command == "help":
-                    self.printHelp()
-                else:
-                    parts = command.split("-")
-                    function = parts[0]
-                    if function == "card":
-                        self.handleCardCommand(parts)
-                    elif function == "game":
-                        pass
-                    elif function == "throw":
-                        self.handleManualThrows()
-                if self.isStillConnected():
-                    start_new_thread(self.getMainInput, ())
-                #except:
-                    #print "Invalid Command (" + command + "): type help to show valid commands"
+                try:
+                    command = self.response
+                    self.response = None
+                    #command = raw_input("~> ").lower().replace(" ", "")
+                    if command == "help":
+                        self.printHelp()
+                    else:
+                        parts = command.split("-")
+                        function = parts[0]
+                        if function == "card":
+                            self.handleCardCommand(parts)
+                        elif function == "throw":
+                            self.handleManualThrows()
+                        else:
+                            print "Invalid Command (" + command + "): type help to show valid commands"
+                    if self.isStillConnected():
+                        start_new_thread(self.getMainInput, ())
+                except:
+                    print "Invalid Command (" + command + "): type help to show valid commands"
         print "--> Terminate Console"
 
     def handleManualThrows(self):
@@ -131,13 +131,10 @@ Manually Enter Throws: throw
             (flag, data) = self.splitFlagsAndData(message)
             names = data.split(",")
             for name in names:
-                print "Sending " + name + " in:"
-                countDownDuration = 3
-                for i in range(0, countDownDuration):
-                    print countDownDuration - i
-                    sleep(1)
+                sleep(1)
                 try:
                     self.dcs.sendMessage(self.cardTag, self.cardIDs[name])
+                    print "Semt: " + name
                 except:
                     print "Invalid Username"
 
