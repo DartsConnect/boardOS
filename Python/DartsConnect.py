@@ -36,7 +36,7 @@ class DartsConnect(DartsConnectServerDelegate):
         self.bonjour.stopBonjour()
 
     def __init__(self):
-        self.dcs = DartsConnectServer(4010, self, 1) # under 1024 is privileged, reserved for OS 0 for auto port assignment
+        self.dcs = DartsConnectServer(4011, self, 1) # under 1024 is privileged, reserved for OS 0 for auto port assignment
         self.dcs.startServer()
 
 if __name__ == '__main__':

@@ -134,7 +134,7 @@ Manually Enter Throws: throw
                 sleep(1)
                 try:
                     self.dcs.sendMessage(self.cardTag, self.cardIDs[name])
-                    print "Semt: " + name
+                    print "Sent: " + name
                 except:
                     print "Invalid Username"
 
